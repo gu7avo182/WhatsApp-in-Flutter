@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp/page.dart';
-import 'package:whatsapp/widgets/TopAppBar.dart';
 
 import 'package:whatsapp/widgets/camera.dart';
 import 'package:whatsapp/widgets/chamadas.dart';
@@ -17,10 +16,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
   
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-
-      title: 'Flutter Demo',
-      home: Pageone(),
+      debugShowCheckedModeBanner: true,
+      home: Pageone(),  
     );
   }
 }
@@ -34,11 +31,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-
   @override
   Widget build(BuildContext context) {
-
-    //double widthtotal = MediaQuery.of(context).size.width;
 
     return  DefaultTabController(
       initialIndex: 0,
@@ -46,16 +40,22 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(100),
-          child:  TopAppBar(),
+          child:  AppBar(),
         ),
-         body: TabBarView(children: [
-
-          Camera(),
-          Conversas(),
-          Status(),
-          Chamadas(),
-        ],
-        )
+         body: TabBarView(
+           children: [
+            Camera(),
+            Conversas(),
+            Status(),
+            Chamadas(),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            },
+          child: const Icon(Icons.navigation),
+          backgroundColor: Colors.green,          
+        ),
       ),
     );
   }

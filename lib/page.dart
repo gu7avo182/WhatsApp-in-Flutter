@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:whatsapp/widgets/dropdownbutton.dart';
+import 'package:whatsapp/widgets/conversas.dart';
 
 void main() =>runApp(Pageone());
 
@@ -13,11 +13,17 @@ class _PageoneState extends State<Pageone> with  SingleTickerProviderStateMixin{
 
   late TabController _tabController;
   late ScrollController _scrollController;
+  Icon cusIcon = Icon(Icons.search);
 
+  Widget cusSearchBar = Text("WhatsApp");
+  Widget menuBar = Icon(Icons.more_vert);
+
+  Color topBackground = Color(0xFF075E54);
 
     // ignore: must_call_super
     void initState(){
       //EXCLUSIVO PARA TAB E TAB CONTROLER
+      
     _tabController = new TabController(length: 4, vsync: this);
     //CONTROLA WIDGETS ROLAVEIS
     _scrollController = new ScrollController();
@@ -28,33 +34,70 @@ class _PageoneState extends State<Pageone> with  SingleTickerProviderStateMixin{
 
     double widthtotal = MediaQuery.of(context).size.width;
     return MaterialApp(
-
     debugShowCheckedModeBanner: false,
-
     home: Scaffold(
+
+    floatingActionButton: FloatingActionButton(
+      onPressed: () {},
+      child: const Icon(Icons.message),
+      backgroundColor: Color(0XFF128c7e),          
+      ),
+
     body:NestedScrollView(
+      
         controller: _scrollController,
         headerSliverBuilder: (BuildContext context, bool innerBoxScrolled){
 
           return <Widget> [
-            SliverAppBar(         
-              stretch: true,
-              actions: [
+            SliverAppBar(     
+                title: cusSearchBar,    
+              stretch: false,
+              actions: <Widget> [
 
                 IconButton(
-                  icon: Icon(Icons.search, size: 30,),
+                  icon: cusIcon,
                   onPressed: () { 
-                          
+                    setState(() {
+                      if(this.cusIcon.icon == Icons.search){
+                        this.cusIcon = Icon(Icons.cancel);
+
+                        this.cusSearchBar = TextField(
+                          textInputAction: TextInputAction.go,
+                          style: TextStyle(
+                            backgroundColor: Colors.red,
+                            color: Colors.white,
+                            fontSize: 16.00,
+                          ),
+                        );
+                        
+                      } else{
+                        this.cusIcon = Icon(Icons.search);
+                        this.cusSearchBar = Text('WhatsApp');
+                      }
+                    });
                   },
                 ),
 
-                IconButton(
-                  icon: Icon(Icons.more_vert, size: 30,),
-                  onPressed: () { 
-                  },
+              PopupMenuButton(
+                color: Colors.green,
+                padding: EdgeInsets.only(right: 50),         
+                itemBuilder: (context) =>[
+                  PopupMenuItem(child: Row(children: [
+                    Icon(Icons.search, color: Colors.black,),
+                      ]
+                    ),
+                  ),
 
-                ),
-              ],
+                  PopupMenuItem(child: Row(children: [
+                    Icon(Icons.search, color: Colors.black,),
+                      ]
+                    ),
+                  )
+                ],
+                child: Icon(Icons.more_vert),
+              ),
+
+            ],
 
               flexibleSpace: FlexibleSpaceBar(
                 stretchModes: [
@@ -64,26 +107,8 @@ class _PageoneState extends State<Pageone> with  SingleTickerProviderStateMixin{
               pinned: true,
               floating: true,
               centerTitle: false,
-              backgroundColor: Color(0xFF075E54),
+              backgroundColor: topBackground,  
 
-              title: Container(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                children: <Widget>[
-
-                  const Text('WhatsApp'),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(100, 0, 0, 0),
-                    child: Row(children:[
-                    ]
-                    )
-                  ),
-                ]
-              ),
-                ),
-           
               bottom: TabBar(
                 labelPadding: EdgeInsets.symmetric(horizontal: 0.0),
                 isScrollable: true,
@@ -121,22 +146,12 @@ class _PageoneState extends State<Pageone> with  SingleTickerProviderStateMixin{
         body: Stack(
                 children: [
 
-              Positioned(
-                top: 1,
-                right: 1,
-                child: Container(
-                height: 300,
-                width:150,
-                color: Colors.red[500],
-                ),
-              ),  
-
               TabBarView(
                 controller: _tabController,
                 children: [
 
               Container(child: Text('Camera')),
-              Text('Conversas'),
+              Conversas(),
               Text('Status'),
               Text('Chamadas'),
                   ],
