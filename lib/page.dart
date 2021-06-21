@@ -1,45 +1,85 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp/widgets/conversas.dart';
 
-void main() =>runApp(Pageone());
-
 class Pageone extends StatefulWidget {
 
   @override
-  _PageoneState createState() => _PageoneState();
+   _PageoneState createState(){  
+    print('A PAGINA FOI CRIADA');                                     
+    return _PageoneState();                                           
+  }
+  
 }
 
-class _PageoneState extends State<Pageone> with  SingleTickerProviderStateMixin{
+class _PageoneState extends State<Pageone> with  SingleTickerProviderStateMixin {
+
+      void createdController(){
+        _tabController = new TabController(length: 4, vsync: this);
+        _scrollController = new ScrollController();
+      }
+
+      void atual(){
+        print(' O VALOR ATUAL DO INDEX É: ${_tabController.index}');     
+      }
+
+      double construido = 0.0;
+      void construirPage(int valor){
+      construido++;
+      print('A PAGINA FO CONSTRUIDA $construido vezes');
+    }
+
+    double x = 0.0;
+    double y = 0.0;
+    double z = 0.0;
+
+    void _updateLocation(PointerEvent details) {
+    setState(() {
+      x = details.position.dx;
+      y = details.position.dy;
+    });
+  }
+
+  Icon getIcon(int currentIndex){
+    switch (currentIndex) {
+      case 0 : return Icon(Icons.camera);
+      case 1 : return Icon(Icons.message);
+      case 2: return Icon(Icons.alarm);
+      case 3: return Icon(Icons.call);
+      default: return Icon(Icons.ac_unit);
+    }
+  }
 
   late TabController _tabController;
   late ScrollController _scrollController;
   Icon cusIcon = Icon(Icons.search);
-
   Widget cusSearchBar = Text("WhatsApp");
   Widget menuBar = Icon(Icons.more_vert);
-
   Color topBackground = Color(0xFF075E54);
 
     // ignore: must_call_super
     void initState(){
-      //EXCLUSIVO PARA TAB E TAB CONTROLER
-      
-    _tabController = new TabController(length: 4, vsync: this);
-    //CONTROLA WIDGETS ROLAVEIS
-    _scrollController = new ScrollController();
+    createdController();
   }
+
+  @override
+  void didChangeDependencies(){
+    super.didChangeDependencies();
+    print('A PAGINA FOI ATUALIZADA ');
+  }
+
 
   @override
   Widget build(BuildContext context) {
 
     double widthtotal = MediaQuery.of(context).size.width;
+    atual();
     return MaterialApp(
     debugShowCheckedModeBanner: false,
     home: Scaffold(
 
     floatingActionButton: FloatingActionButton(
       onPressed: () {},
-      child: const Icon(Icons.message),
+      child: getIcon(_tabController.index),
       backgroundColor: Color(0XFF128c7e),          
       ),
 
@@ -137,29 +177,30 @@ class _PageoneState extends State<Pageone> with  SingleTickerProviderStateMixin{
                 child: Tab(
                 text: "CHAMADAS"),
                 width: (widthtotal/3) - 15),
-
                 ]
               ),
             ),
           ];
         },
         body: Stack(
-                children: [
-
-              TabBarView(
-                controller: _tabController,
-                children: [
-
-              Container(child: Text('Camera')),
-              Conversas(),
-              Text('Status'),
-              Text('Chamadas'),
+            children: [
+                Listener(
+                  onPointerMove: _updateLocation,
+            child: TabBarView(  
+                          
+              controller: _tabController,
+              children: [
+                Container(child: Text('Camera')),
+                Conversas(),
+                Text('Status'),
+                Text('Chamadas'),
                   ],
                 ),
-              ]
-            ),
+              ),
+            ]
           ),
-      ),
+        ),
+      ), 
     );
   }
 }

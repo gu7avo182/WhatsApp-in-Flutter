@@ -9,7 +9,7 @@ class Conversas extends StatelessWidget {
     return Container(
       child: ListView.builder(
 
-        itemCount: 1,
+        itemCount: 10,
         scrollDirection: Axis.vertical,
         padding: EdgeInsets.all(0),
         dragStartBehavior: DragStartBehavior.start,
@@ -65,7 +65,6 @@ class Conversas extends StatelessWidget {
                               children: [
                                 Text('Mensagem que a pessoa enviou', style: TextStyle(),),
                                 Container(
-                                  color: Colors.blue,
                                   child: Row(
                                     children: [
                                       Icon(Icons.access_alarm_sharp, size: 18,),
