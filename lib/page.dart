@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:whatsapp/widgets/conversas.dart';
+import 'package:whatsapp/widgets/Button/button.dart';
+import 'package:whatsapp/widgets/Button/menu3points.dart';
+import 'package:whatsapp/widgets/conversas/conversas.dart';
 
 class Pageone extends StatefulWidget {
 
@@ -8,10 +10,9 @@ class Pageone extends StatefulWidget {
     print('A PAGINA FOI CRIADA');                                     
     return _PageoneState();                                           
   }
-  
 }
 
-class _PageoneState extends State<Pageone> with  SingleTickerProviderStateMixin {
+class _PageoneState extends State<Pageone> with SingleTickerProviderStateMixin {
 
       void createdController(){
         _tabController = new TabController(length: 4, vsync: this);
@@ -19,18 +20,18 @@ class _PageoneState extends State<Pageone> with  SingleTickerProviderStateMixin 
       }
 
       void atual(){
-        print(' O VALOR ATUAL DO INDEX É: ${_tabController.index}');     
+        print('O VALOR ATUAL DO INDEX É: ${_tabController.index}');
       }
 
       double construido = 0.0;
+
       void construirPage(int valor){
       construido++;
       print('A PAGINA FO CONSTRUIDA $construido vezes');
     }
 
-    double x = 0.0;
-    double y = 0.0;
-    double z = 0.0;
+      double x = 0.0;
+      double y = 0.0;
 
     void _updateLocation(PointerEvent details) {
     setState(() {
@@ -38,22 +39,12 @@ class _PageoneState extends State<Pageone> with  SingleTickerProviderStateMixin 
       y = details.position.dy;
     });
   }
-
-  Icon getIcon(int currentIndex){
-    switch (currentIndex) {
-      case 0 : return Icon(Icons.camera);
-      case 1 : return Icon(Icons.message);
-      case 2: return Icon(Icons.alarm);
-      case 3: return Icon(Icons.call);
-      default: return Icon(Icons.ac_unit);
-    }
-  }
-
   late TabController _tabController;
   late ScrollController _scrollController;
-  Icon cusIcon = Icon(Icons.search);
+
+  Icon cusIcon        = Icon(Icons.search);
   Widget cusSearchBar = Text("WhatsApp");
-  Widget menuBar = Icon(Icons.more_vert);
+  Widget menuBar      = Icon(Icons.more_vert);
   Color topBackground = Color(0xFF075E54);
 
     // ignore: must_call_super
@@ -64,25 +55,17 @@ class _PageoneState extends State<Pageone> with  SingleTickerProviderStateMixin 
   @override
   void didChangeDependencies(){
     super.didChangeDependencies();
-    print('A PAGINA FOI ATUALIZADA ');
+    print('A PAGINA FOI ATUALIZADA');
   }
-
 
   @override
   Widget build(BuildContext context) {
 
     double widthtotal = MediaQuery.of(context).size.width;
     atual();
-    return MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: Scaffold(
+    return Scaffold(
 
-    floatingActionButton: FloatingActionButton(
-      onPressed: () {},
-      child: getIcon(_tabController.index),
-      backgroundColor: Color(0XFF128c7e),          
-      ),
-
+    floatingActionButton: Button(variavel: _tabController.index),
     body:NestedScrollView(
       
         controller: _scrollController,
@@ -118,24 +101,7 @@ class _PageoneState extends State<Pageone> with  SingleTickerProviderStateMixin 
                   },
                 ),
 
-              PopupMenuButton(
-                color: Colors.green,
-                padding: EdgeInsets.only(right: 50),         
-                itemBuilder: (context) =>[
-                  PopupMenuItem(child: Row(children: [
-                    Icon(Icons.search, color: Colors.black,),
-                      ]
-                    ),
-                  ),
-
-                  PopupMenuItem(child: Row(children: [
-                    Icon(Icons.search, color: Colors.black,),
-                      ]
-                    ),
-                  )
-                ],
-                child: Icon(Icons.more_vert),
-              ),
+                Menu()  //AQUELE MENU DE 3 POINTINHOS NO TOPO
 
             ],
 
@@ -150,6 +116,10 @@ class _PageoneState extends State<Pageone> with  SingleTickerProviderStateMixin 
               backgroundColor: topBackground,  
 
               bottom: TabBar(
+                onTap: (value) {
+                  print('A janela Mudou');
+                  atual();
+                },
                 labelPadding: EdgeInsets.symmetric(horizontal: 0.0),
                 isScrollable: true,
                 indicatorWeight: 5.0,
@@ -187,7 +157,6 @@ class _PageoneState extends State<Pageone> with  SingleTickerProviderStateMixin 
                 Listener(
                   onPointerMove: _updateLocation,
             child: TabBarView(  
-                          
               controller: _tabController,
               children: [
                 Container(child: Text('Camera')),
@@ -200,7 +169,6 @@ class _PageoneState extends State<Pageone> with  SingleTickerProviderStateMixin 
             ]
           ),
         ),
-      ), 
     );
   }
 }
